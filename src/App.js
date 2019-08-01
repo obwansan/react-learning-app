@@ -46,8 +46,8 @@ class App extends Component {
   togglePersonsHandler = () => {
     // Get the current boolean value of showPersons, change it to the opposite,
     // then reassign it to showPersons.
-    const doesShow = this.state.showPersons;
-    this.setState({showPersons: !doesShow});
+    const show = this.state.showPersons;
+    this.setState({showPersons: !show});
   }
 
   render() {
@@ -59,6 +59,33 @@ class App extends Component {
       cursor: 'pointer'
     }
 
+    // persons will be reset each time the button is clicked because
+    // the state will change and so the component will rerender.
+    // This approach keeps the returned JSX clean / minimal.
+    let persons = null;
+    if(this.state.showPersons) {
+      persons = (
+        <div>
+        <Person
+          name={this.state.persons[0].name}
+          age={this.state.persons[0].age}
+        />
+        <Person
+          name={this.state.persons[1].name}
+          age={this.state.persons[1].age}
+          click={this.switchNameHandler.bind(this, 'Max!')}
+          changed={this.nameChangedHandler}
+        >
+          My Hobbies: Racing
+        </Person>
+        <Person
+          name={this.state.persons[2].name}
+          age={this.state.persons[2].age}
+        />
+      </div>
+      )
+    }
+
     return (
       <div className="App">
         <h1>Hi, I'm a React App</h1>
@@ -68,29 +95,7 @@ class App extends Component {
           onClick={this.togglePersonsHandler}
         >Toggle Persons
         </button>
-        { /* Can put JSX as well as propeties and methods in single curly braces
-        because JSX is JavaScript (i.e. React.CreateElement), not HTML. */
-          this.state.showPersons ?
-            <div>
-            <Person
-              name={this.state.persons[0].name}
-              age={this.state.persons[0].age}
-            />
-            <Person
-              name={this.state.persons[1].name}
-              age={this.state.persons[1].age}
-              click={this.switchNameHandler.bind(this, 'Max!')}
-              changed={this.nameChangedHandler}
-            >
-              My Hobbies: Racing
-            </Person>
-            <Person
-              name={this.state.persons[2].name}
-              age={this.state.persons[2].age}
-            />
-          </div> : null
-        }
-
+        {persons}
       </div>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
