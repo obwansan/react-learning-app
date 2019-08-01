@@ -9,7 +9,8 @@ class App extends Component {
       { name: 'Manu', age: 29 },
       { name: 'Stephanie', age: 26 }
     ],
-    otherState: 'some other value'
+    otherState: 'some other value',
+    showPersons: false
   };
 
   switchNameHandler = (newName) => {
@@ -40,12 +41,16 @@ class App extends Component {
     });
   }
 
+  // Using an arrow function means the method will always return into the
+  // App class (binds it to the App class)
+  togglePersonsHandler = () => {
+    // Get the current boolean value of showPersons, change it to the opposite,
+    // then reassign it to showPersons.
+    const doesShow = this.state.showPersons;
+    this.setState({showPersons: !doesShow});
+  }
+
   render() {
-    // Can use inline styles like this when you want to restrict the scope of the 
-    // style to a single component or element within a component. Note that this is 
-    // a JS object with camelCase keys and string values, that is converted (somewhow)
-    // by React into CSS when assigned to the style attribute on the element.
-    // But makes it hard to do complex styling with pseudo-classes etc.
     const style = {
       backgroundColor: 'white',
       font: 'inherit',
@@ -58,32 +63,34 @@ class App extends Component {
       <div className="App">
         <h1>Hi, I'm a React App</h1>
         <p>This is really working!</p>
-        {/* on click, the anonymous function is invoked and returns the invoked 
-         switchNameHandler function, which can be passed an argument. */}
         <button 
           style={style}
-          onClick={() => this.switchNameHandler('Maximillian!!!')}
-        >Switch Name</button>
-        <Person
-          name={this.state.persons[0].name}
-          age={this.state.persons[0].age}
-        />
-        <Person
-          name={this.state.persons[1].name}
-          age={this.state.persons[1].age}
-          // Another way to pass the name into switchNameHandler, but a bit more performant 
-          // then the arrow-function as it doesn't cause React to re-render as much. It binds
-          // switchNameHandler to the App class so when it's called in Person.js it can access
-          // this.setState to change the state in App ('lifting state up').
-          click={this.switchNameHandler.bind(this, 'Max!')}
-          changed={this.nameChangedHandler}
-        >
-          My Hobbies: Racing
-        </Person>
-        <Person
-          name={this.state.persons[2].name}
-          age={this.state.persons[2].age}
-        />
+          onClick={this.togglePersonsHandler}
+        >Toggle Persons
+        </button>
+        { /* Can put JSX as well as propeties and methods in single curly braces
+        because JSX is JavaScript (i.e. React.CreateElement), not HTML. */
+          this.state.showPersons ?
+            <div>
+            <Person
+              name={this.state.persons[0].name}
+              age={this.state.persons[0].age}
+            />
+            <Person
+              name={this.state.persons[1].name}
+              age={this.state.persons[1].age}
+              click={this.switchNameHandler.bind(this, 'Max!')}
+              changed={this.nameChangedHandler}
+            >
+              My Hobbies: Racing
+            </Person>
+            <Person
+              name={this.state.persons[2].name}
+              age={this.state.persons[2].age}
+            />
+          </div> : null
+        }
+
       </div>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
