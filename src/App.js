@@ -13,18 +13,6 @@ class App extends Component {
     showPersons: false
   };
 
-  switchNameHandler = (newName) => {
-    // console.log('Was clicked!');
-    // DON'T DO THIS: this.state.persons[0].name = 'Maximilian';
-    this.setState({
-      persons: [
-        { name: newName, age: 28 },
-        { name: 'Manu', age: 29 },
-        { name: 'Stephanie', age: 27 }
-      ]
-    });
-  };
-
   // When you type in the input field, the onChange attribute is 'triggered', calling
   // props.changed, which is the nameChangedHandler method. The event target is the 
   // input field so its value (event.target.value) is the entered characters. Each keypress
@@ -39,6 +27,20 @@ class App extends Component {
         { name: 'Stephanie', age: 26 }
       ]
     });
+  }
+
+  // NOTE: "The value of a constant cannot change through re-assignment, 
+  // and a constant cannot be re-declared." But when you're adding to an array 
+  // or object you're not re-assigning or re-declaring the constant, it's 
+  // already declared and assigned, you're just adding to the "list" that the 
+  // constant points to. What makes the const a const is that it will always 
+  // point to the same array or object (a let variable could be reassigned a 
+  // different array, object etc, or redeclared). The properties of the array or 
+  // object itself are free to change.
+  deletePersonHandler = (personIndex) => {
+    const persons = this.state.persons;
+    persons.splice(personIndex, 1); // splice modifies the original array
+    this.setState({persons: persons});
   }
 
   // Using an arrow function means the method will always return into the
@@ -66,11 +68,12 @@ class App extends Component {
     if(this.state.showPersons) {
       persons = (
         <div>
-          {this.state.persons.map(person => {
+          {this.state.persons.map((person, index) => {
             return <Person 
+              click={() => this.deletePersonHandler(index)}
               name={person.name} 
               age={person.age} />
-          })};
+          })}
         </div>
       )
     }
