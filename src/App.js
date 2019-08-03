@@ -5,28 +5,37 @@ import Person from './Person/Person';
 class App extends Component {
   state = {
     persons: [
-      { name: 'Max', age: 28 },
-      { name: 'Manu', age: 29 },
-      { name: 'Stephanie', age: 26 }
+      { id: 'asd1', name: 'Max', age: 28 },
+      { id: 'dfg2', name: 'Manu', age: 29 },
+      { id: 'cvb3', name: 'Stephanie', age: 26 }
     ],
     otherState: 'some other value',
     showPersons: false
   };
 
-  // When you type in the input field, the onChange attribute is 'triggered', calling
-  // props.changed, which is the nameChangedHandler method. The event target is the 
-  // input field so its value (event.target.value) is the entered characters. Each keypress
-  // triggers the onChange attribute, passes the event object to nameChangedHandler, the name
-  // value is updated with the event.target.value, and this change in state causes the app to
-  // re-render, displaying each new character as it's typed.
-  nameChangedHandler = (event) => {
-    this.setState({
-      persons: [
-        { name: 'Max', age: 28 },
-        { name: event.target.value, age: 29 },
-        { name: 'Stephanie', age: 26 }
-      ]
+  nameChangedHandler = (event, id) => {
+    // Find index of person object whose name is being changed
+    const personIndex = this.state.persons.findIndex(person => {
+      return person.id === id;
     });
+
+    // Get a copy of the person state object corresponding to the Person component whose input field is being typed in (name changed).
+    const person = {
+      ...this.state.persons[personIndex]
+    }
+
+    // Update the name property of the person object copy with the value of the input field (on each key press)
+    person.name = event.target.value;
+
+    // Get a copy of state's array of person objects
+    const persons = [...this.state.persons];
+
+    // Update the copy of state's array of person objects with changed person object
+    persons[personIndex] = person;
+
+    // Update state (overwrite current persons array with new update persons array)
+    this.setState( {persons: persons} );
+
   }
 
   // Don't modify state directly. Make a copy, modify it and then use setState
@@ -66,7 +75,10 @@ class App extends Component {
             return <Person 
               click={() => this.deletePersonHandler(index)}
               name={person.name} 
-              age={person.age} />
+              age={person.age} 
+              key={person.id}
+              changed={(event) => this.nameChangedHandler(event, person.id)}
+            />
           })}
         </div>
       )
