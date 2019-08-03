@@ -29,17 +29,11 @@ class App extends Component {
     });
   }
 
-  // NOTE: "The value of a constant cannot change through re-assignment, 
-  // and a constant cannot be re-declared." But when you're adding to an array 
-  // or object you're not re-assigning or re-declaring the constant, it's 
-  // already declared and assigned, you're just adding to the "list" that the 
-  // constant points to. What makes the const a const is that it will always 
-  // point to the same array or object (a let variable could be reassigned a 
-  // different array, object etc, or redeclared). The properties of the array or 
-  // object itself are free to change.
+  // Don't modify state directly. Make a copy, modify it and then use setState
   deletePersonHandler = (personIndex) => {
-    const persons = this.state.persons;
-    persons.splice(personIndex, 1); // splice modifies the original array
+    // const persons = this.state.persons.slice();  //  ES5 way to get a copy of the persons array
+    const persons = [...this.state.persons]; // ES6 way to get a copy of the persons array
+    persons.splice(personIndex, 1);
     this.setState({persons: persons});
   }
 
