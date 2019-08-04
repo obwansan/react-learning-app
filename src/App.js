@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // The CSS rules from App.css are converted into a JS object that is scoped to the App component. This happens because we enabled CSS modules in the webpack config. By importing App.css as 'some name' (e.g. classes), the localIdentName option creates an App component-specific JS object. Each CSS rule is converted into a property on the classes object. The classes object is 'scoped' / 'namespaced' / made unique to the App component by combining the name of each CSS rule (selector) with the name of the file it's imported into (local) and hashed.
 import classes from './App.css';
 import Person from './Person/Person';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
   state = {
@@ -17,7 +18,7 @@ class App extends Component {
   nameChangedHandler = (event, id) => {
     // Find index of person object whose name is being changed
     const personIndex = this.state.persons.findIndex(person => {
-      return person.id === id;
+      return person.Userid === id;
     });
 
     // Get a copy of the person state object corresponding to the Person component whose input field is being typed in (name changed).
@@ -67,13 +68,15 @@ class App extends Component {
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
-            return <Person 
+            // The key prop has to be on the outer component
+            return <ErrorBoundary key={person.id}>
+              <Person 
               click={() => this.deletePersonHandler(index)}
               name={person.name} 
               age={person.age} 
-              key={person.id}
               changed={(event) => this.nameChangedHandler(event, person.id)}
-            />
+              />
+            </ErrorBoundary>
           })}
         </div>
       )
