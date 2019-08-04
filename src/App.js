@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './App.css';
+// The CSS rules from App.css are converted into a JS object that is scoped to the App component. This happens because we enabled CSS modules in the webpack config. By importing App.css as 'some name' (e.g. classes), the localIdentName option creates an App component-specific JS object. Each CSS rule is converted into a property on the classes object. The classes object is 'scoped' / 'namespaced' / made unique to the App component by combining the name of each CSS rule (selector) with the name of the file it's imported into (local) and hashed.
+import classes from './App.css';
 import Person from './Person/Person';
 
 class App extends Component {
@@ -56,21 +57,12 @@ class App extends Component {
   }
 
   render() {
-    // Just passed as a prop to the button
-    const style = {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-      }
-    }
-
     // persons will be reset each time the button is clicked because
     // the state will change and so the component will rerender.
     // This approach keeps the returned JSX clean / minimal.
     let persons = null;
+    let btnClass = '';
+
     if(this.state.showPersons) {
       persons = (
         <div>
@@ -85,24 +77,23 @@ class App extends Component {
           })}
         </div>
       )
-      style.backgroundColor = 'red';
-      }
+      btnClass = classes.red;
     }
 
-    let classes = [];
+    let assignedClasses = [];
     if(this.state.persons.length <= 2) {
-      classes.push('red');
+      assignedClasses.push(assignedClasses.red);
     }
     if(this.state.persons.length <= 1) {
-      classes.push('bold');
+      assignedClasses.push(assignedClasses.bold);
     }
 
     return (
-        <div className="App">
-          <h1>Hi, I'm a React App</h1>
-          <p className={classes.join(' ')}>This is really working!</p>
+        <div className={classes.App}>
+          <h1>Hi, I&#39;m a React App</h1>
+          <p className={assignedClasses.join(' ')}>This is really working!</p>
           <button 
-            style={style}
+            className={btnClass}
             onClick={this.togglePersonsHandler}
           >Toggle Persons
           </button>

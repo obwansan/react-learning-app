@@ -1,12 +1,12 @@
 import React from 'react';
-
-import './Person.css';
+// The CSS rules from App.css are converted into a JS object that is scoped to the Person component.
+import classes from './Person.css';
 
 const person = (props) => {
 
   return (
-    <div className="Person">
-      <p onClick={props.click}>I'm {props.name} and I am {props.age} years old</p>
+    <div className={classes.person}>
+      <p onClick={props.click}>I&#39;m {props.name} and I am {props.age} years old</p>
       {/* props.children accesses whatever text or HTML is between the React
       component opening and closing tags */}
       <p>{props.children}</p>
