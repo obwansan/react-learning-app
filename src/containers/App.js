@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 // The CSS rules from App.css are converted into a JS object that is scoped to the App component. This happens because we enabled CSS modules in the webpack config. By importing App.css as 'some name' (e.g. classes), the localIdentName option creates an App component-specific JS object. Each CSS rule is converted into a property on the classes object. The classes object is 'scoped' / 'namespaced' / made unique to the App component by combining the name of each CSS rule (selector) with the name of the file it's imported into (local) and hashed.
 import classes from './App.css';
-import Person from './Person/Person';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
   state = {
@@ -18,7 +18,7 @@ class App extends Component {
   nameChangedHandler = (event, id) => {
     // Find index of person object whose name is being changed
     const personIndex = this.state.persons.findIndex(person => {
-      return person.Userid === id;
+      return person.id === id;
     });
 
     // Get a copy of the person state object corresponding to the Person component whose input field is being typed in (name changed).
@@ -62,44 +62,22 @@ class App extends Component {
     // the state will change and so the component will rerender.
     // This approach keeps the returned JSX clean / minimal.
     let persons = null;
-    let btnClass = '';
 
     if(this.state.showPersons) {
-      persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            // The key prop has to be on the outer component
-            return <ErrorBoundary key={person.id}>
-              <Person 
-              click={() => this.deletePersonHandler(index)}
-              name={person.name} 
-              age={person.age} 
-              changed={(event) => this.nameChangedHandler(event, person.id)}
-              />
-            </ErrorBoundary>
-          })}
-        </div>
-      )
-      btnClass = classes.red;
-    }
-
-    let assignedClasses = [];
-    if(this.state.persons.length <= 2) {
-      assignedClasses.push(assignedClasses.red);
-    }
-    if(this.state.persons.length <= 1) {
-      assignedClasses.push(assignedClasses.bold);
+      persons = <Persons
+            persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangedHandler}
+          />
     }
 
     return (
         <div className={classes.App}>
-          <h1>Hi, I&#39;m a React App</h1>
-          <p className={assignedClasses.join(' ')}>This is really working!</p>
-          <button 
-            className={btnClass}
-            onClick={this.togglePersonsHandler}
-          >Toggle Persons
-          </button>
+          <Cockpit 
+            clicked={this.togglePersonsHandler}
+            showPersons={this.state.showPersons}
+            persons={this.state.persons}
+          />
           {persons}
         </div>
     );
