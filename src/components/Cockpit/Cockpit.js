@@ -1,4 +1,6 @@
 import React from 'react';
+// CSS Modules: Loads the CSS rules in as a JS object called classes.
+// Can access individual rules as properties on the object.
 import classes from './Cockpit.css'
 
 const cockpit = (props) => {
@@ -18,7 +20,7 @@ const cockpit = (props) => {
   return (
     // Scopes the Cockpit CSS classes to the cockpit component
     <div className={classes.Cockpit}> 
-      <h1>Hi, I&#39;m a React App</h1>
+      <h1>{props.title}</h1>
       <p className={assignedClasses.join(' ')}>This is really working!</p>
       <button 
         className={btnClass}

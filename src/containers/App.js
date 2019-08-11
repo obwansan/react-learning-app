@@ -5,6 +5,12 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log('[App.js] constructor');
+
+  }
+
   state = {
     persons: [
       { id: 'asd1', name: 'Max', age: 28 },
@@ -14,6 +20,15 @@ class App extends Component {
     otherState: 'some other value',
     showPersons: false
   };
+
+  static getDerivedStateFromProps(props, state) {
+    console.log('[App.js] getDerivedStateFromProps', props);
+    return state;
+  }
+
+  componentDidMount() {
+    console.log('[App.js] componentDidMount')
+  }
 
   nameChangedHandler = (event, id) => {
     // Find index of person object whose name is being changed
@@ -35,7 +50,7 @@ class App extends Component {
     // Update the copy of state's array of person objects with changed person object
     persons[personIndex] = person;
 
-    // Update state (overwrite current persons array with new update persons array)
+    // Update state (overwrite current persons array with new updated persons array)
     this.setState( {persons: persons} );
 
   }
@@ -58,6 +73,7 @@ class App extends Component {
   }
 
   render() {
+    console.log('[App.js] render');
     // persons will be reset each time the button is clicked because
     // the state will change and so the component will rerender.
     // This approach keeps the returned JSX clean / minimal.
@@ -74,6 +90,7 @@ class App extends Component {
     return (
         <div className={classes.App}>
           <Cockpit 
+            title={this.props.title}
             clicked={this.togglePersonsHandler}
             showPersons={this.state.showPersons}
             persons={this.state.persons}
