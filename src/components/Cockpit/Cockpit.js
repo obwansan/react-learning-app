@@ -25,10 +25,10 @@ const cockpit = (props) => {
     btnClass = classes.red;
   }
 
-  if(props.persons.length <= 2) {
+  if(props.personsLength <= 2) {
     assignedClasses.push(classes.red);
   }
-  if(props.persons.length <= 1) {
+  if(props.personsLength <= 1) {
     assignedClasses.push(classes.bold);
   }
 
@@ -46,4 +46,9 @@ const cockpit = (props) => {
   );
 };
 
-export default cockpit;
+// memoization caches a copy/snapshot of the component and only rerenders it if 
+// its inputs (props) change. If they don't, React will 'return' the stored component.
+// Prevents unnecessary re-rendering and improves optimization.
+// Good to wrap functional child components in React.memo so they only re-render when 
+// they change, not when only props or state in the parent element changes.
+export default React.memo(cockpit);

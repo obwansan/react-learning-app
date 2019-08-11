@@ -1,17 +1,26 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import Person from './Person/Person';
 
-class Persons extends Component {
+// pureComponent does the same check as shouldComponentUpdate for all prop
+// and only rerenders the component if one of them has changed.
+class Persons extends PureComponent {
 
   // static getDerivedStateFromProps(props, state) {
   //   console.log('[Persons.js] getDerivedStateFromProps');
   //   return state;
   // }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log('[Persons.js] shouldComponentUpdate');
-    return true;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log('[Persons.js] shouldComponentUpdate');
+    // shouldComponentUpdate() is invoked before rendering when new props or state are received. Defaults to true.
+    // Only rerender if the persons component has changed (this.state.persons in App).
+    // if(nextProps.persons !== this.props.persons) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+  //   return true;
+  // }
 
   // Can save some data (e.g. user's scroll position) before the component
   // rerenders. It's automatically returned to the snapshot argument in 
