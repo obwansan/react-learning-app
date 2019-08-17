@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
-import WithClass from '../hoc/WithClass';
+import withClass from '../hoc/withClass';
+import Aux from '../hoc/Aux';
 
 class App extends Component {
   constructor(props) {
@@ -99,7 +100,8 @@ class App extends Component {
     }
 
     return (
-        <WithClass classes={classes.App}>
+      <Aux>
+      {/* <WithClass classes={classes.App}> */}
         {/* <div className={classes.App}> */}
           <button 
             onClick={() => {
@@ -117,7 +119,8 @@ class App extends Component {
             /> : null }
           {persons}
         {/* </div> */}
-        </WithClass>
+        {/* </WithClass> */}
+      </Aux> 
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
   }
@@ -125,4 +128,4 @@ class App extends Component {
 
 // We wrap person in a higer-order component that provides person with extra 
 // functionality e.g. can use css pseudo-classes in inline JS styling.
-export default App;
+export default withClass(App, classes.App);
