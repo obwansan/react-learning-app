@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from 'react';
+import PropTypes from 'prop-types';
 // The CSS rules from App.css are converted into a JS object that is scoped to the Person component.
 import classes from './Person.css';
 import aux from '../../../hoc/Aux';
@@ -23,6 +24,14 @@ class Person extends Component {
       // </aux>
     )
   }
+}
+
+// propTypes has to be lowercase here
+Person.propTypes = {
+  click: PropTypes.func,
+  name: PropTypes.string,
+  age: PropTypes.number,
+  changed: PropTypes.func
 }
 
 export default withClass(Person, classes.person);
