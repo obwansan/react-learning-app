@@ -8,17 +8,36 @@ import withClass from '../../../hoc/withClass';
 // React.Fragment is built into React 16. It works exactly like our <aux> component under the hood.
 
 class Person extends Component {
+  constructor(props) {
+    super(props);
+    this.inputElementRef = React.createRef();
+  }
+
+  componentDidMount() {
+    // this.inputElement.focus();
+    this.inputElementRef.current.focus();
+  }
+
+
   render() {
     console.log('[Person.js] rendering...')
     return (
       // <div className={classes.person}>
       // <aux>
       <Fragment>
-        <p onClick={this.props.click}>I&#39;m {this.props.name} and I am {this.props.age} years old</p>
+        <p onClick={this.props.click}>
+          I&#39;m {this.props.name} and I am {this.props.age} years old
+        </p>
         {/* props.children accesses whatever text or HTML is between the React
         component opening and closing tags */}
         <p>{this.props.children}</p>
-        <input type="text" onChange={this.props.changed} value={this.props.name} />
+        <input 
+          // ref={(inputEl) => {this.inputElement = inputEl}}
+          ref={this.inputElementRef}
+          type="text" 
+          onChange={this.props.changed} 
+          value={this.props.name} 
+        />
       {/* </div> */}
       </Fragment>
       // </aux>
