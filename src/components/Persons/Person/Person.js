@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 // The CSS rules from App.css are converted into a JS object that is scoped to the Person component.
 import classes from './Person.css';
 import aux from '../../../hoc/Aux';
+import withClass from '../../../hoc/withClass';
 
 // React.Fragment is built into React 16. It works exactly like our <aux> component under the hood.
 
@@ -24,4 +25,4 @@ class Person extends Component {
   }
 }
 
-export default Person;
+export default withClass(Person, classes.person);

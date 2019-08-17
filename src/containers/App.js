@@ -21,7 +21,8 @@ class App extends Component {
     ],
     otherState: 'some other value',
     showPersons: false,
-    showCockpit: true
+    showCockpit: true,
+    changeCounter: 0
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -62,9 +63,17 @@ class App extends Component {
     // Update the copy of state's array of person objects with changed person object
     persons[personIndex] = person;
 
-    // Update state (overwrite current persons array with new updated persons array)
-    this.setState( {persons: persons} );
-
+    // "React may batch multiple setState() calls into a single update for performance."
+    // This means the setState call might be delayed, and the state counter might have
+    // changed by the time it's called. The solution is to pass a callback whose first 
+    // parameter takes the current state. So when the setState is called it will use the 
+    // state passed into the callback, rather than the current state.
+    this.setState((prevState, props) =>{
+      return {
+        persons: persons,
+        changeCounter: prevState.changeCounter + 1
+      };
+    });
   }
 
   // Don't modify state directly. Make a copy, modify it and then use setState
