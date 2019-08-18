@@ -7,6 +7,7 @@ import classes from './Person.css';
 // import aux from '../../../hoc/Aux';
 import withClass from '../../../hoc/withClass';
 import AuthContext from '../../../context/auth-context';
+import authContext from '../../../context/auth-context';
 
 
 class Person extends Component {
@@ -18,8 +19,14 @@ class Person extends Component {
   componentDidMount() {
     // this.inputElement.focus();
     this.inputElementRef.current.focus();
+    console.log('this.context.authenticated:', this.context.authenticated);
   }
 
+  // 'static' means the property or method can be accessed directly via the class
+  // (e.g. Person.contextType) without having to instantiate an object (same as in OO PHP).
+  // Here it's 'React' that accesses the static property. It allows you to access authContext
+  // via this.context.xxx
+  static contextType = authContext;
 
   render() {
     console.log('[Person.js] rendering...')
@@ -27,13 +34,11 @@ class Person extends Component {
       // <div className={classes.person}>
       // <aux>
       <Fragment>
-        <AuthContext.Consumer>
-          {/* The authenticated value is set in authContext.Provider */}
-          {/* AuthContext.Consumer passes context to an anonymous function that returns
-          the JSX code. */}
-          {context => context.authenticated ? <p>Authenticated!</p> : <p>Please log in</p>}
-        </AuthContext.Consumer>
-
+          {this.context.authenticated ? 
+            ( <p>Authenticated!</p> )
+            :
+            ( <p>Please log in</p> )
+          }
         <p onClick={this.props.click}>
           I&#39;m {this.props.name} and I am {this.props.age} years old
         </p>

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 // CSS Modules: Loads the CSS rules in as a JS object called classes.
 // Can access individual rules as properties on the object.
 import classes from './Cockpit.css'
@@ -6,6 +6,16 @@ import AuthContext from '../../context/auth-context';
 
 const cockpit = props => {
   const toggleBtnRef = useRef(null);
+  // Can use the useContext hook in functional components as you can only use 
+  // static contextType in class-based components
+  const authContext = useContext(AuthContext);
+
+  // When you click the login button in Cockpit the loginHandler runs because it has been
+  // assigned to authContext.login in authContext.Provider in App. The loginHandler sets the
+  // value of state.authenticated. This automatically updates the value of authContext.authenticated
+  // in authContext.Provider in App. Therefore the value of authContext.authenticated here will also
+  // update as we're importing it / using it and it will be re-imported on each render cycle.
+  console.log('authContext.authenticated:', authContext.authenticated);
 
   // The useEffect hook seems to do everything that the class-based component 
   // lifecycle methods componentDidMount and componentDidUpdate do 
@@ -51,9 +61,7 @@ const cockpit = props => {
         onClick={props.clicked}
       >Toggle Persons
       </button>
-      <AuthContext.Consumer>
-        {context => <button onClick={context.login}>Log in</button>}
-      </AuthContext.Consumer>
+        <button onClick={authContext.login}>Log in</button>
     </div>
   );
 };
