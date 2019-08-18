@@ -1,11 +1,13 @@
+// React.Fragment is built into React 16. It works exactly like our <aux> component under the hood.
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-// The CSS rules from App.css are converted into a JS object that is scoped to the Person component.
-import classes from './Person.css';
-import aux from '../../../hoc/Aux';
-import withClass from '../../../hoc/withClass';
 
-// React.Fragment is built into React 16. It works exactly like our <aux> component under the hood.
+// The CSS rules from Person.css are converted into a JS object that is scoped to the Person component.
+import classes from './Person.css';
+// import aux from '../../../hoc/Aux';
+import withClass from '../../../hoc/withClass';
+import AuthContext from '../../../context/auth-context';
+
 
 class Person extends Component {
   constructor(props) {
@@ -25,7 +27,13 @@ class Person extends Component {
       // <div className={classes.person}>
       // <aux>
       <Fragment>
-        {this.props.isAuth ? <p>Authenticated!</p> : <p>Please log in</p>}
+        <AuthContext.Consumer>
+          {/* The authenticated value is set in authContext.Provider */}
+          {/* AuthContext.Consumer passes context to an anonymous function that returns
+          the JSX code. */}
+          {context => context.authenticated ? <p>Authenticated!</p> : <p>Please log in</p>}
+        </AuthContext.Consumer>
+
         <p onClick={this.props.click}>
           I&#39;m {this.props.name} and I am {this.props.age} years old
         </p>
